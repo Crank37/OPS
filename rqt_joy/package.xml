@@ -1,0 +1,22 @@
+<package format="3">
+  <name>rqt_joy</name>
+  <version>0.0.1</version>
+  <description>rqt_joy provides a GUI plugin for a a virtual joypad to control a robot using Joy messages.</description>
+  <maintainer email="wiesen@fh-aachen.de">Patrick Wiesen</maintainer>
+
+  <license>BSD</license>
+
+  <author>Patrick Wiesen</author>
+
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>joy_msgs</exec_depend>
+  <exec_depend version_gte="0.2.19">python_qt_binding</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>rqt_gui</exec_depend>
+  <exec_depend>rqt_gui_py</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+    <rqt_gui plugin="${prefix}/plugin.xml"/>
+  </export>
+</package>

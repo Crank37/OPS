@@ -1,0 +1,6 @@
+/**
+\mainpage
+\htmlinclude manifest.html
+
+\b rqt_joy provides a GUI plugin for a virtual joypad to control a robot using joy messages.
+*/
