@@ -1,0 +1,79 @@
+import rclpy
+from rclpy.node import Node
+
+art_pool = ["aeroplane",
+        "banana",
+        "bird",
+        "boat",
+        "cat",
+        "clock",
+        "cow",
+        "donut",
+        "elephant",
+        "giraffe",
+        "scissors",
+        "sheep",
+        "stopsign",
+        "teddy",
+        "toilet",
+        "train",
+        "umbrella",
+        "zebra",
+        ]
+
+class Vec3:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __str__(self):
+        return str(self.x) + " " + str(self.y) + " " + str(self.z)
+
+class Pose:
+    def __init__(self, position, orientation):
+        self.position = position
+        self.orientation = orientation
+
+    def __str__(self):
+        return str(self.position) + " " + str(self.orientation)
+
+class ExhibitLocation:
+    def __init__(self, tag, art):
+        self.tag = tag
+        self.art = art
+
+exhibit_locations = [
+        ExhibitLocation(
+            Pose(
+                Vec3(-0.636005, 4.45525, 0.25),
+                Vec3(0, 0, 0.64501)
+                ),
+            Pose(
+                Vec3(-0.420341, 4.618723, 0.25),
+                Vec3(0, 0, 0.64501)
+                )
+            ),
+        ]
+
+
+class Curator(Node):
+    def __init__(self):
+        super().__init__("curator")
+        self.declare_parameter("exhibit_size", 1)
+
+    def setup_gallery(self):
+        print("curator")
+        k = self.get_parameter("exhibit_size").get_parameter_value().integer_value
+
+        with open("curator_debug.txt", "w") as f:
+            f.write(str(k))
+
+def main():
+    rclpy.init()
+
+    c = Curator()
+    c.setup_gallery()
+
+if __name__ == '__main__':
+    main()
