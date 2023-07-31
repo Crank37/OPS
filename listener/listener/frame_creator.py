@@ -24,7 +24,8 @@ class broadcasting(Node):
           
         #gemappte Tags
         self.tag_id_coordinates = {
-                                    "Frame" : {"x_t" : 3.0, "y_t" : 3.0, "z_t" : 0. , "w_o" : 1.0, "x_o" : 0.0, "y_o" : 0., "z_o" : 0.0},
+                                    "Tag1" : {"x_t" : 3.0, "y_t" : 3.0, "z_t" : 0. , "w_o" : 1.0, "x_o" : 0.0, "y_o" : 0., "z_o" : 0.0},
+                                    "Tag2" : {"x_t" : -1.0, "y_t" : 3.5, "z_t" : 0. , "w_o" : 1.0, "x_o" : 0.0, "y_o" : 0., "z_o" : 0.0},
                                     }
 
 
