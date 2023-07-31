@@ -1,118 +1,200 @@
+#!/usr/bin/env python3
+
+
 from math import sqrt
 
-import rclpy
-from rclpy.node import Node 
-
 import sys
+
 import rclpy
+
 from rclpy.action import ActionClient
+
 from action_msgs.msg import GoalStatus
+
 
 import random
 
 
 from nav2_msgs.action import NavigateToPose
+
 from geometry_msgs.msg import Point, Quaternion
 
-from tf2_ros.buffer import Buffer
-from tf2_ros.transform_listener import TransformListener
 
-class autoExplore(Node):
-    def __init__(self):
-        super().__init__("auto_goals")
+# Map Bounds
 
-        #listener
-        self.tf_buffer = Buffer()
-        self.tf_listener = TransformListener(self.tf_buffer, self)
+map_min_x = -1.0
 
-        # create Action Client object with desired message type and action name
-        self.nav_to_pose_client = ActionClient(self, NavigateToPose, 'navigate_to_pose') #Node richtig?
+map_max_x = 3.0
 
-        #wait for action server to come up
-        while not self.nav_to_pose_client.wait_for_server(timeout_sec=2.0):
-            print("Server still not available; waiting...")
+map_min_y = 0.0
 
-        self.sucess = True
-        self.status = 4
-
-        #Eingrenzung Zufallswerte
-        self.map_min_x = -1.0
-        self.map_max_x = 3.0
-        self.map_min_y = 0.0
-        self.map_max_y = 4.0
-
-        self.create_timer(0.5, self.send_goal)
-
-    #Ziel ansteuern
-    def send_goal(self):
-        #Ziel in msg
-        goal = NavigateToPose.Goal()
-        goal.pose.header.frame_id = "map"    
-
-        #x,y Position abfragen von zum anfahrenden TF
-        self.check_pose()
-
-        goal.pose.header.stamp = self.get_clock().now().to_msg() 
-        try:
-            goal.pose.pose.position.x = self.pos_x
-            goal.pose.pose.position.y = self.pos_y
-            
-            print("Received new goal => X: " + str(goal.pose.pose.position.x) + " Y: " + str(goal.pose.pose.position.y))
-
-            #Vom CLient Ziel an Nav Server gesendet
-            send_goal_future = self.nav_to_pose_client.send_goal_async(goal) 
-            rclpy.spin_until_future_complete(self, send_goal_future)
-            goal_handle = send_goal_future.result()
-
-            if not goal_handle.accepted:
-                print("Goal was rejected")
-                self.nav_to_pose_client.destroy()
-                self.destroy_node()
-                rclpy.shutdown()
-                sys.exit(0)
-            print("Goal Accepted!")
-
-            self.status = self.checkResult(goal_handle)
-        except:
-            print("fehler wegen lookup")
+map_max_y = 4.0
 
 
-    def check_pose(self):
-        from_frame = "map"
-        to_frame = "Frame"
-
-        try:
-            
-            trans = self.tf_buffer.lookup_transform(from_frame, to_frame, rclpy.time.Time())
-            self.pos_x = trans.transform.translation.x
-            print(self.pos_x)
-            self.pos_y = trans.transform.translation.y
-        except:
-            print("lookup failed")     
-
-        
-
-    def checkResult(self, goal_handle):
-        """Check for task completion while blocking further execution"""
-        get_result_future = goal_handle.get_result_async()
-
-        rclpy.spin_until_future_complete(self.nav_to_pose_client, get_result_future)
-        status = get_result_future.result().status
-
-        if status == GoalStatus.STATUS_SUCCEEDED:
-            print("Reached Goal!!!")
-        return status
+success = True
 
 
 def main():
-    rclpy.init()
-    node = autoExplore()
+
+  global auto_chaos
+
+  global nav_to_pose_client
+
+
+  status = 4
+
+
+  rclpy.init()
+
+
+  auto_chaos = rclpy.create_node('auto_goals')
+
+
+  # create Action Client object with desired message type and action name
+
+  nav_to_pose_client = ActionClient(auto_chaos, NavigateToPose, 'navigate_to_pose')
+
+
+  # wait for action server to come up
+
+  while not nav_to_pose_client.wait_for_server(timeout_sec=2.0):
+
+    print("Server still not available; waiting...")
+
+
+  while rclpy.ok():
+
     try:
-        rclpy.spin(node)
+
+      position = generatePosition()
+
+      orientation = generateOrientation()
+
+      goal_handle = sendGoal(position, orientation)
+
+      status = checkResult(goal_handle)
+
     except KeyboardInterrupt:
-        pass
+
+      print("Shutdown requested... complying...")
+
+      break
+
+    
+
+  nav_to_pose_client.destroy()
+
+  auto_chaos.destroy_node()
+
+  rclpy.shutdown()
+
+
+def sendGoal(position, orientation):
+
+  """Create action goal object and send to action server, check if goal accepted"""
+
+  global auto_chaos
+
+  global nav_to_pose_client
+
+
+  goal = NavigateToPose.Goal()
+
+  goal.pose.header.frame_id = "map"
+
+
+  goal.pose.header.stamp = auto_chaos.get_clock().now().to_msg()
+
+  
+
+  goal.pose.pose.position = position
+
+  goal.pose.pose.orientation = orientation
+
+
+  print("Received new goal => X: " + str(goal.pose.pose.position.x) + " Y: " + str(goal.pose.pose.position.y))
+
+
+  send_goal_future = nav_to_pose_client.send_goal_async(goal)
+
+  rclpy.spin_until_future_complete(auto_chaos, send_goal_future, timeout_sec= 10.0) #hier drin, bis Ziel erreicht wird
+  print("bin hier")
+
+  goal_handle = send_goal_future.result()
+
+
+  if not goal_handle.accepted:
+
+    print("Goal was rejected")
+
+    nav_to_pose_client.destroy()
+
+    auto_chaos.destroy_node()
+
     rclpy.shutdown()
+
+    sys.exit(0)
+
+
+  print("Goal Accepted!")
+
+
+  return goal_handle
+
+
+def checkResult(goal_handle):
+
+  """Check for task completion while blocking further execution"""
+
+  get_result_future = goal_handle.get_result_async()
+
+
+  rclpy.spin_until_future_complete(auto_chaos, get_result_future)
+
+
+  status = get_result_future.result().status
+
+
+  if status == GoalStatus.STATUS_SUCCEEDED:
+
+    print("Reached Goal!!!")
+
+
+  return status
+
+
+def generatePosition():
+
+  """Randomize a pair of values to denote xy position on map"""
+
+  position = Point()
+
+  position.x = round(random.uniform(map_min_x,map_max_x), 2)
+
+  position.y = round(random.uniform(map_min_y,map_max_y), 2)
+
+  position.z = 0.0
+
+  return position
+
+
+def generateOrientation():
+
+  """Randomize a pair of values to denote yaw orientation on map"""
+
+  quat = Quaternion()
+
+  quat.w = round(random.uniform(-1.0,1.0),3)
+
+  quat.x = 0.0
+
+  quat.y = 0.0
+
+  quat.z = sqrt(1 - quat.w*quat.w)
+
+  return quat
 
 
 if __name__ == '__main__':
+
     main()
