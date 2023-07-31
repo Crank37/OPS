@@ -21,6 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'frame_creator = listener.frame_creator:main',
+            'navigate_to_tag = listener.navigate_to_tag:main',
+            'listener = listener.listener:main',
         ],
     },
 )
