@@ -13,6 +13,7 @@ import random
 
 from nav2_msgs.action import NavigateToPose
 from geometry_msgs.msg import Point, Quaternion
+from std_msgs.msg import String
 
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
@@ -29,8 +30,8 @@ class autoExplore(Node):
         self.nav_to_pose_client = ActionClient(self, NavigateToPose, 'navigate_to_pose') #Node richtig?
 
         #mittels Terminal, um zu abfahrenden Tag zuzuweisen (0 initialzustand, 9-10 sind die Tags in der Liste nach reihenfolge)
-        # $ ros2 topic pub  /choose_tag "name"
-        self.choose = self.create_subscription(STRING, "/choose_tag", self.choose_tag_cb, 1)
+        # $ ros2 topic pub --once   /choose_tag std_msgs/String "data: 'name'" 
+        self.choose = self.create_subscription(String, "/choose_tag", self.choose_tag_cb, 1)
 
         #wait for action server to come up
         while not self.nav_to_pose_client.wait_for_server(timeout_sec=2.0):
@@ -62,12 +63,18 @@ class autoExplore(Node):
         try:
             goal.pose.pose.position.x = self.pos_x
             goal.pose.pose.position.y = self.pos_y
+            goal.pose.pose.position.z = 0.0
+            goal.pose.pose.orientation.x = 0.0
+            goal.pose.pose.orientation.y = 0.0
+            goal.pose.pose.orientation.z = 0.0
+            goal.pose.pose.orientation.w = 1.0
             
             print("Received new goal => X: " + str(goal.pose.pose.position.x) + " Y: " + str(goal.pose.pose.position.y))
 
             #Vom CLient Ziel an Nav Server gesendet
             send_goal_future = self.nav_to_pose_client.send_goal_async(goal) 
-            rclpy.spin_until_future_complete(self, send_goal_future)
+            # rclpy.spin_until_future_complete(self, send_goal_future, timeout_sec=10.0)
+            #kommt hier nicht weiter????
             goal_handle = send_goal_future.result()
 
             if not goal_handle.accepted:
@@ -83,13 +90,15 @@ class autoExplore(Node):
             print("fehler wegen lookup")
 
     def choose_tag_cb(self, nr):
-        self.nav_tag_nr = nr
+        self.nav_tag_nr = String()
+        self.nav_tag_nr = nr.data
 
         
 
 
     def check_pose(self):
-        if self.nav_tag_nr is "nothing":
+        print(self.nav_tag_nr)
+        if self.nav_tag_nr == "nothing":
             self.pos_x = 0.0
             self.pos_y = 0.0
         else:
@@ -129,6 +138,10 @@ def main():
     except KeyboardInterrupt:
         pass
     rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()
 
 
 if __name__ == '__main__':
