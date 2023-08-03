@@ -70,7 +70,7 @@ def generate_launch_description():
     composable_node = ComposableNode(
         name='apriltag',
         package='apriltag_ros', plugin='AprilTagNode',
-        remappings=[("/apriltag/image", "/camera/image_raw"), ("/apriltag/camera_info", "/camera/camera_info")],
+        remappings=[("/image_rect", "/camera/image_raw"), ("/camera_info", "/camera/camera_info")],#"/apriltag/image_rect", "/image_rect/compressed"), ("/apriltag/camera_info", "/camera/camera_info")], #/apriltag/image
         parameters=[cfg_16h5])
     container = ComposableNodeContainer(
         name='tag_container',
