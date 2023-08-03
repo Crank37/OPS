@@ -78,7 +78,7 @@ class listener(Node):
 
             #in die Liste zum navigieren (inklusive Offset, damit keine Kollision)
             PoseOff = self.calculate_offset(Pose)
-            self.Tag_PosesOff .update({new_name : {"x_t" : PoseOff.transform.translation.x, "y_t" : PoseOff.transform.translation.y, "z_t" : PoseOff.transform.translation.z , "w_o" : PoseOff.transform.rotation.w, "x_o" : PoseOff.transform.rotation.x, "y_o" : PoseOff.transform.rotation.y, "z_o" : PoseOff.transform.rotation.z}})
+            self.Tag_PosesOff.update({new_name : {"x_t" : PoseOff.transform.translation.x, "y_t" : PoseOff.transform.translation.y, "z_t" : PoseOff.transform.translation.z , "w_o" : PoseOff.transform.rotation.w, "x_o" : PoseOff.transform.rotation.x, "y_o" : PoseOff.transform.rotation.y, "z_o" : PoseOff.transform.rotation.z}})
 
 
 
