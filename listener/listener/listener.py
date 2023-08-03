@@ -50,7 +50,7 @@ class listener(Node):
                     only_id = detection.id
                     from_frame = "base_footprint"
                     to_frame = String()
-                    to_frame = "tagStandard41h12:" + str(only_id)   #<---        NOCH BEZEICHNUNG EINFÜGEN DER TAGS
+                    to_frame = "tag16h5:" + str(only_id)   #<---        NOCH BEZEICHNUNG EINFÜGEN DER TAGS
 
                     # Roboter -> Tag: Distanz mit Pythagoras
                     trans = self.tf_buffer.lookup_transform( from_frame, to_frame, rclpy.time.Time())
