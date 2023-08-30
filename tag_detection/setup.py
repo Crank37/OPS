@@ -13,16 +13,18 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.*')),
+        (os.path.join('share', package_name, 'cfg'), glob('cfg/*.yaml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='fatih',
-    maintainer_email='fatih@todo.todo',
+    maintainer='tb3',
+    maintainer_email='tb3@todo.todo',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+        'tf_listener = tag_detection.tf_listener:main',
         ],
     },
 )

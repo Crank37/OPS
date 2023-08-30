@@ -41,10 +41,10 @@ class autoExplore(Node):
         self.status = 4
 
         #Eingrenzung Zufallswerte
-        self.map_min_x = -1.0
-        self.map_max_x = 3.0
-        self.map_min_y = 0.0
-        self.map_max_y = 4.0
+        self.map_min_x = -6.0
+        self.map_max_x = -0.5
+        self.map_min_y = -7.0
+        self.map_max_y = -4.0
 
         self.nav_tag_nr = "nothing"
 
@@ -144,3 +144,5 @@ if __name__ == '__main__':
     main()
 
 
+if __name__ == '__main__':
+    main()

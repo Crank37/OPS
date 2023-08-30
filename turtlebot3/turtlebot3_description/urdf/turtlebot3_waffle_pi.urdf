@@ -233,7 +233,7 @@
 
   <link name="camera_link">
     <collision>
-      <origin xyz="0.005 0.011 0.013" rpy="0 0 0"/>
+      <origin xyz="0.005 0.011 0.013" rpy="1.57 0 1.57"/>
       <geometry>
         <box size="0.015 0.030 0.027"/>
       </geometry>

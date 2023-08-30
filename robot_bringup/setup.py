@@ -2,7 +2,6 @@ from setuptools import setup
 import os
 from glob import glob
 
-
 package_name = 'robot_bringup'
 
 setup(
@@ -14,11 +13,12 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.*')),
+        (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='fatih',
-    maintainer_email='fatih@todo.todo',
+    maintainer='tb3',
+    maintainer_email='tb3@todo.todo',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],

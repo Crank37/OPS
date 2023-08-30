@@ -4,7 +4,7 @@
   <name>robot_bringup</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="fatih@todo.todo">fatih</maintainer>
+  <maintainer email="tb3@todo.todo">tb3</maintainer>
   <license>TODO: License declaration</license>
 
   <test_depend>ament_copyright</test_depend>

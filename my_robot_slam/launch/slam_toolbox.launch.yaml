@@ -1,13 +1,10 @@
 launch:
 
-
 - node:
-
     pkg: "slam_toolbox"
     exec: "async_slam_toolbox_node"
     name: "slam_toolbox"
     param:
-
     # ROS specific parameters
     -
       name: "odom_frame"
@@ -29,24 +26,25 @@ launch:
       name: "enable_interactive_mode"
       value: True
 
-    # #Feintuning Parameter für bessere Ergebnisse https://github.com/SteveMacenski/slam_toolbox#configuration
-    #   name: "link_scan_maximum_distance"
-    #   value: 2.0
-    # -
-    #   name: "loop_match_maximum_variance_coarse"
-    #   value: 6.0
-    # -
-    #   name: "correlation_search_space_dimension"
-    #   value: 1.0
-    # -
-    #   name: "correlation_search_space_resolution"
-    #   value: 0.02
-    # -
-    #   name: "correlation_search_space_smear_deviation"
-    #   value: 0.2
-    # - 
-    #   name: "distance_variance_penalty"
-    #   value: 0.5
-    # -
-    #   name: "angle_variance_penalty"
-    #   value: 1.0
+    # Mapping parameters
+    -
+      name: "link_scan_maximum_distance"
+      value: 3.0
+    -
+      name: "loop_match_maximum_variance_coarse"
+      value: 6.0
+    -
+      name: "correlation_search_space_dimension"
+      value: 1.0
+    -
+      name: "correlation_search_space_resolution"
+      value: 0.02
+    -
+      name: "correlation_search_space_smear_deviation"
+      value: 0.2
+    - 
+      name: "distance_variance_penalty"
+      value: 0.5
+    -
+      name: "angle_variance_penalty"
+      value: 1.0

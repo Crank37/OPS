@@ -1,6 +1,5 @@
 launch:        
 
-
 - node:
     pkg: "nav2_map_server"
     exec: "map_server"
@@ -8,7 +7,7 @@ launch:
     param:
     -
       name: "yaml_filename"
-      value: "$(find-pkg-share my_robot_slam)/maps/my_map.yaml"
+      value: "$(find-pkg-share my_robot_slam)/maps/map_2.yaml" # Path for map file
     -
       name: "use_sim_time"
       value: False
@@ -20,7 +19,7 @@ launch:
     param:
     -
       name: "base_frame_id"
-      value: "base_link"
+      value: "base_footprint"
     -
       name: "odom_frame_id"
       value: "odom"
@@ -48,6 +47,7 @@ launch:
     -
       name: "use_sim_time"
       value: False
+
 
 - node:
     pkg: "nav2_lifecycle_manager"

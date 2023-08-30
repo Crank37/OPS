@@ -15,7 +15,7 @@ ros2 launch robot_bringup robot.launch.yaml
 ```
 
 #### URDF
-The **turtlebot3** package is built from source, as the the URDF had to be adjusted to correctly detect AprilTags. The *camera_link* frame is rotated, so the z-axis corresponds to the camera axis.
+The **turtlebot3** package is built from source, as the URDF had to be adjusted to correctly detect AprilTags. The *camera_link* frame is rotated, so the z-axis corresponds to the camera axis.
 
 To ensure proper functioning, include `export TURTLEBOT3_MODEL=waffle_pi` in your shell configuration file.
 

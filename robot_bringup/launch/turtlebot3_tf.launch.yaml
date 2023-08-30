@@ -3,24 +3,36 @@ launch:
 - node:
     pkg: "tf2_ros"
     exec: "static_transform_publisher"
-    name: "base_foot_link"
+    name: "parent_to_child_tf"
+    args: '0.0 0.0 0.25 3.14159 0.0 0.0 my_parent_frame my_child_frame'
+
+# Relationship between the frames base_footprint and base_link:
+- node:
+    pkg: "tf2_ros"
+    exec: "static_transform_publisher"
+    name: "base_footprint_to_base_link_tf"
     args: '0.0 0.0 0.01 0.0 0.0 0.0 base_footprint base_link'
 
-- node:
-    pkg: "tf2_ros"
-    exec: "static_transform_publisher"
-    name: "base_camera"
-    args: '0.015 0.0913 0.0945 -1.571 0.0 -1.571 base_link camera_link'
+# Relationship between the frames base_link and camera_link:
+
+      #- node:
+      #    pkg: "tf2_ros"
+      #    exec: "static_transform_publisher"
+      #    name: "base_link_to_camera_link_tf"
+      #    args: '0.015 0.0913 0.0945 -1.571 1.571 -1.571 base_link camera_link'
+
+# Relationship between the frames base_link and imu_link:
 
 - node:
     pkg: "tf2_ros"
     exec: "static_transform_publisher"
-    name: "base_imu"
+    name: "base_link_to_imu_link_tf"
     args: '0.0 0.0 0.068 0.0 0.0 0.0 base_link imu_link'
 
+# Relationship between the frames base_link and laser_frame:
+
 - node:
     pkg: "tf2_ros"
     exec: "static_transform_publisher"
-    name: "base_laser"
+    name: "base_link_to_laser_frame_tf"
     args: '-0.09 0.0 0.114 0.0 0.0 0.0 base_link laser_frame'
-
