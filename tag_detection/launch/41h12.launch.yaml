@@ -1,0 +1,32 @@
+launch:
+- arg:
+    name: device
+    default: "0"
+
+- node_container:
+    pkg: rclcpp_components
+    exec: component_container
+    name: apriltag_container
+    namespace: ""
+    composable_node:
+
+    - pkg: apriltag_ros
+      plugin: AprilTagNode
+      name: apriltag
+      remap:
+      - from: /image_rect
+        to: /image_rect
+      - from: /camera_info
+        to: /camera_info
+      param:
+      - from: $(find-pkg-share tag_detection)/cfg/tags_41h12.yaml
+
+    - pkg: image_proc
+      plugin: image_proc::RectifyNode
+      name: rectify
+      remap:
+      - from: image
+        to: image_raw
+      extra_arg:
+      - name: use_intra_process_comms
+        value: "True"

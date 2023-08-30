@@ -1,0 +1,11 @@
+/**:
+    ros__parameters:
+      video_device: "/dev/video0" # Make sure that you enter the correct video_device. ls /dev/video* command in the terminal should list your camera's device 
+      framerate: 30.0
+      io_method: "mmap"
+      frame_id: "camera_lens_link" # We set the frame_id to the link that our images would to be relative to, i.e., not the camera_link, but the rotated camera_lens_link
+      pixel_format: "yuyv"
+      image_width: 640
+      image_height: 480
+      camera_name: "webcam"
+      camera_info_url: "package://robot_bringup/config/webcam.yaml"

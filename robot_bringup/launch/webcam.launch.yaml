@@ -1,0 +1,34 @@
+launch:
+
+- node:
+    pkg: "usb_cam"
+    exec: "usb_cam_node_exe"
+    name: "usb_cam"
+    param:
+    -
+      name: "video_device"
+      value: "/dev/video0"
+    -
+      name: "framerate"
+      value: 5.0
+    -
+      name: "io_method"
+      value: "mmap"
+    -
+      name: "frame_id"
+      value: "camera_link"
+    -
+      name: "pixel_format"
+      value: "yuyv"
+    -
+      name: "image_width"
+      value: 640
+    -
+      name: "image_height"
+      value: 480
+    -
+      name: "camera_name"
+      value: "webcam"
+    -
+      name: "camera_info_url"
+      value: "file://$(find-pkg-share robot_bringup)/config/webcam.yaml"
